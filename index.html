@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON BREAKER</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Title Screen -->
+    <div id="titleScreen" class="screen">
+        <div class="title-container">
+            <h1 class="neon-title">NEON<br>BREAKER</h1>
+            <div class="subtitle">CYBERPUNK BREAKOUT</div>
+            <div class="loading-container">
+                <div class="loading-bar">
+                    <div class="loading-fill"></div>
+                </div>
+                <div class="loading-text">INITIALIZING...</div>
+            </div>
+            <button id="startBtn" class="neon-button hidden">START GAME</button>
+        </div>
+        <div class="grid-bg"></div>
+    </div>
+
+    <!-- Game Screen -->
+<div id="gameScreen" class="screen hidden">
+    <!-- HUD -->
+    <div class="hud">
+        <div class="hud-left">
+            <div class="score-container">
+                <span class="label">SCORE</span>
+                <span id="score" class="value">000000</span>
+            </div>
+            <div class="lives-container">
+                <span class="label">LIVES</span>
+                <div id="lives" class="lives-display">
+                    <span class="life-icon">◆</span>
+                    <span class="life-icon">◆</span>
+                    <span class="life-icon">◆</span>
+                </div>
+            </div>
+        </div>
+        <div class="hud-right">
+            <div class="level-container">
+                <span class="label">LEVEL</span>
+                <span id="level" class="value">01</span>
+            </div>
+            <div class="combo-container">
+                <span class="label">COMBO</span>
+                <span id="combo" class="value">x1</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Area -->
+    <div class="game-main">
+        <!-- Game Canvas Container -->
+        <div class="game-container">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            <div class="scanlines"></div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <div class="panel-section">
+                <h3 class="panel-title">🎮 CONTROLS</h3>
+                <div class="control-list">
+                    <div class="control-item">
+                        <span class="control-key">A / ←</span>
+                        <span class="control-desc">Move Left</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">D / →</span>
+                        <span class="control-desc">Move Right</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">SPACE</span>
+                        <span class="control-desc">Launch Ball</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">ESC</span>
+                        <span class="control-desc">Pause</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="panel-title">🧱 BRICK TYPES</h3>
+                <div class="mechanic-list">
+                    <div class="mechanic-item normal-brick">
+                        <span class="mechanic-icon">🟦</span>
+                        <div class="mechanic-info">
+                            <span class="mechanic-name">Normal</span>
+                            <span class="mechanic-desc">Basic brick - 1 hit</span>
+                        </div>
+                    </div>
+                    <div class="mechanic-item strong-brick">
+                        <span class="mechanic-icon">🟨</span>
+                        <div class="mechanic-info">
+                            <span class="mechanic-name">Strong</span>
+                            <span class="mechanic-desc">Requires 2 hits</span>
+                        </div>
+                    </div>
+                    <div class="mechanic-item teleport-brick">
+                        <span class="mechanic-icon">🌀</span>
+                        <div class="mechanic-info">
+                            <span class="mechanic-name">Teleport</span>
+                            <span class="mechanic-desc">Ball teleports randomly</span>
+                        </div>
+                    </div>
+                    <div class="mechanic-item split-brick">
+                        <span class="mechanic-icon">⚡</span>
+                        <div class="mechanic-info">
+                            <span class="mechanic-name">Split</span>
+                            <span class="mechanic-desc">Creates extra ball</span>
+                        </div>
+                    </div>
+                    <div class="mechanic-item magnetic-brick">
+                        <span class="mechanic-icon">🧲</span>
+                        <div class="mechanic-info">
+                            <span class="mechanic-name">Magnetic</span>
+                            <span class="mechanic-desc">Paddle attracts ball</span>
+                        </div>
+                    </div>
+                    <div class="mechanic-item explosive-brick">
+                        <span class="mechanic-icon">💥</span>
+                        <div class="mechanic-info">
+                            <span class="mechanic-name">Explosive</span>
+                            <span class="mechanic-desc">Destroys nearby bricks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="panel-title">⚡ POWER-UPS</h3>
+                <div class="mechanic-list">
+                    <div class="mechanic-item powerup-extralife">
+                        <span class="mechanic-icon">❤️</span>
+                        <div class="mechanic-info">
+                            <span class="mechanic-name">Extra Life</span>
+                            <span class="mechanic-desc">Gain additional life</span>
+                        </div>
+                    </div>
+                    <div class="mechanic-item powerup-slowball">
+                        <span class="mechanic-icon">🐌</span>
+                        <div class="mechanic-info">
+                            <span class="mechanic-name">Slow Ball</span>
+                            <span class="mechanic-desc">Ball moves slower</span>
+                        </div>
+                    </div>
+                    <div class="mechanic-item powerup-expand">
+                        <span class="mechanic-icon">📏</span>
+                        <div class="mechanic-info">
+                            <span class="mechanic-name">Expand</span>
+                            <span class="mechanic-desc">Larger paddle</span>
+                        </div>
+                    </div>
+                    <div class="mechanic-item powerup-shrink">
+                        <span class="mechanic-icon">📐</span>
+                        <div class="mechanic-info">
+                            <span class="mechanic-name">Shrink</span>
+                            <span class="mechanic-desc">Smaller paddle</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="panel-title">🎯 SCORING</h3>
+                <div class="scoring-info">
+                    <div class="score-item">
+                        <span class="score-desc">Normal Brick:</span>
+                        <span class="score-value">100pts</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-desc">Strong Brick:</span>
+                        <span class="score-value">200pts</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-desc">Explosive Brick:</span>
+                        <span class="score-value">300pts</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-desc">Combo Multiplier:</span>
+                        <span class="score-value">x1, x2, x3...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Power-up Notifications -->
+    <div id="powerupNotification" class="powerup-notification hidden">
+        <div class="notification-text"></div>
+    </div>
+</div>
+
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen" class="screen hidden">
+        <div class="game-over-container">
+            <h2 class="game-over-title">GAME OVER</h2>
+            <div class="final-score">
+                <span class="label">FINAL SCORE</span>
+                <span id="finalScore" class="value">000000</span>
+            </div>
+            <div class="stats">
+                <div class="stat">
+                    <span class="label">LEVEL REACHED</span>
+                    <span id="finalLevel" class="value">01</span>
+                </div>
+                <div class="stat">
+                    <span class="label">BRICKS DESTROYED</span>
+                    <span id="bricksDestroyed" class="value">000</span>
+                </div>
+            </div>
+            <div class="button-container">
+                <button id="restartBtn" class="neon-button">RESTART</button>
+                <button id="menuBtn" class="neon-button secondary">MENU</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pause Screen -->
+    <div id="pauseScreen" class="screen hidden">
+        <div class="pause-container">
+            <h2 class="pause-title">PAUSED</h2>
+            <div class="pause-controls">
+                <div class="control-item">
+                    <span class="key">ESC</span>
+                    <span class="action">PAUSE/RESUME</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">A/D</span>
+                    <span class="action">MOVE PADDLE</span>
+                </div>
+                <div class="control-item">
+                    <span class="key">SPACE</span>
+                    <span class="action">LAUNCH BALL</span>
+                </div>
+            </div>
+            <button id="resumeBtn" class="neon-button">RESUME</button>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="bgMusic" loop>
+        <source src="sounds/background_music.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="paddleHitSound">
+        <source src="sounds/paddle_hit.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="brickHitSound">
+        <source src="sounds/brick_hit.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="explosionSound">
+        <source src="sounds/explosion.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="teleportSound">
+        <source src="sounds/teleport.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="powerupSound">
+        <source src="sounds/powerup.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="gameOverSound">
+        <source src="sounds/game_over.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="levelUpSound">
+        <source src="sounds/level_up.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="magneticSound">
+        <source src="sounds/magnetic.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="splitSound">
+        <source src="sounds/split.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
